@@ -6,6 +6,7 @@ import (
 	"GoFinal/middlewares"
 	"GoFinal/model"
 	"log"
+	"os"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/postgres"
@@ -53,7 +54,7 @@ func main() {
 	r.GET("/transactions/my-transactions", handlers.GetMyTransactions(db))
 	r.GET("/transactions/user-transactions", middlewares.AdminAuth(), handlers.GetUserTransactions(db))
 
-	if err := r.Run(":8080"); err != nil {
+	if err := r.Run(":" + os.Getenv("PORT")); err != nil {
 		log.Fatal("Server failed!")
 	}
 }
