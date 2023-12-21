@@ -27,12 +27,19 @@ func Register(db *gorm.DB) gin.HandlerFunc {
 		}
 		user.Balance = 0
 		user.Role = "customer"
+
 		hassedPassword, err := helpers.HashPassword(user.Password)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"message": "Failed to hash password", "error": err})
 			return
 		}
 		user.Password = hassedPassword
+		err = user.Validate();
+		
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"message" : "Validation Error" ,"error": err.Error()})
+			return
+		}
 
 		if err := db.Create(&user).Error; err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"message": "Failed to create user", "error": err})

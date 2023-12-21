@@ -12,8 +12,8 @@ type User struct {
 	FullName  string    `json:"full_name" validate:"required"`
 	Email     string    `json:"email" validate:"required,email"`
 	Password  string    `json:"password" validate:"required,min=6"`
-	Role      string    `json:"role" validate:"required,oneof=admin customer"`
-	Balance   int       `json:"balance" validate:"required,min=0,max=100000000"`
+	Role      string    `json:"role" validate:"oneof=admin customer"`
+	Balance   int       `json:"balance" validate:"min=0,max=100000000"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 }
@@ -26,7 +26,6 @@ type Product struct {
 	CategoryID uint      `json:"category_id"`
 	CreatedAt  time.Time `json:"created_at"`
 	UpdatedAt  time.Time `json:"updated_at"`
-	Category   Category  `json:"category" gorm:"foreignKey:CategoryID"`
 }
 
 type Category struct {
@@ -35,6 +34,7 @@ type Category struct {
 	SoldProductAmount int       `json:"sold_product_amount"`
 	CreatedAt         time.Time `json:"created_at"`
 	UpdatedAt         time.Time `json:"updated_at"`
+	Products          []Product
 }
 
 type TransactionHistory struct {

@@ -31,11 +31,23 @@ func main() {
 		log.Fatal("Failed migrate db!" , err);
 	}
 	
-
+	// User
 	r.POST("/users/register", handlers.Register(db))
 	r.POST("/users/login", handlers.Login(db))
 	r.Use(middlewares.TokenAuthMiddleware())
 	r.PATCH("/users/topup", handlers.TopUp(db))
+
+	// Categories
+	r.POST("/categories", middlewares.AdminAuth(), handlers.CreateCategory(db))
+	r.GET("/categories", middlewares.AdminAuth(), handlers.GetCategories(db))
+	r.PATCH("/categories/:categoryId", middlewares.AdminAuth(), handlers.EditCategory(db))
+	r.DELETE("/categories", middlewares.AdminAuth(), handlers.DeleteCategory(db))
+
+	// Products
+	r.POST("/products", middlewares.AdminAuth(), handlers.CreateProduct(db))
+	r.GET("/products", handlers.GetProducts(db))
+	r.PUT("/products/:productId", middlewares.AdminAuth(), handlers.EditProduct(db))
+	r.DELETE("/products/:productId", middlewares.AdminAuth(), handlers.DeleteProduct(db))
 
 	if err := r.Run(":8080"); err != nil {
 		log.Fatal("Server failed!")

@@ -1,6 +1,7 @@
 package middlewares
 
 import (
+	"fmt"
 	"net/http"
 	"strings"
 	"time"
@@ -56,10 +57,27 @@ func TokenAuthMiddleware() gin.HandlerFunc {
 
         email := claims["email"].(string)
         id := claims["id"].(float64)
-        role := claims["email"].(string)
+        role := claims["role"].(string)
         c.Set("email", email)
         c.Set("id", id)
         c.Set("role", role)
         c.Next()
     }
+}
+func AdminAuth() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		userRole, exists := c.Get("role")
+		if !exists {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
+			c.Abort()
+			return
+		}
+        fmt.Println(userRole);
+		if userRole != "admin" {
+			c.JSON(http.StatusForbidden, gin.H{"error": "Forbidden"})
+			c.Abort()
+			return
+		}
+		c.Next()
+	}
 }
