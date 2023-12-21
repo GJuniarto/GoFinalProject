@@ -25,7 +25,7 @@ func main() {
 		log.Fatal("Failed connect db!" , err);
 	}
 
-	err = db.AutoMigrate(&model.User{}, &model.Product{}, &model.Category{}, &model.TransactionHistory{})
+	err = db.AutoMigrate(&model.User{}, &model.Category{},&model.Product{},  &model.TransactionHistory{})
 
 	if err != nil {
 		log.Fatal("Failed migrate db!" , err);

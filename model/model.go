@@ -18,6 +18,15 @@ type User struct {
 	UpdatedAt time.Time `json:"updated_at"`
 }
 
+type Category struct {
+	gorm.Model
+	Type              string    `json:"type" validate:"required"`
+	SoldProductAmount int       `json:"sold_product_amount"`
+	CreatedAt         time.Time `json:"created_at"`
+	UpdatedAt         time.Time `json:"updated_at"`
+	Products          []Product
+}
+
 type Product struct {
 	gorm.Model
 	Title      string    `json:"title" validate:"required"`
@@ -28,14 +37,6 @@ type Product struct {
 	UpdatedAt  time.Time `json:"updated_at"`
 }
 
-type Category struct {
-	gorm.Model
-	Type              string    `json:"type" validate:"required"`
-	SoldProductAmount int       `json:"sold_product_amount"`
-	CreatedAt         time.Time `json:"created_at"`
-	UpdatedAt         time.Time `json:"updated_at"`
-	Products          []Product
-}
 
 type TransactionHistory struct {
 	gorm.Model
