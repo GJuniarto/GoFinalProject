@@ -45,8 +45,6 @@ type TransactionHistory struct {
 	TotalPrice int       `json:"total_price" validate:"required"`
 	CreatedAt  time.Time `json:"created_at"`
 	UpdatedAt  time.Time `json:"updated_at"`
-	Product    Product   `json:"product" gorm:"foreignKey:ProductID"`
-	User       User      `json:"user" gorm:"foreignKey:UserID"`
 }
 
 func (u *User) Validate() error {

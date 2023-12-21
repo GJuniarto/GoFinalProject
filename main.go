@@ -49,6 +49,10 @@ func main() {
 	r.PUT("/products/:productId", middlewares.AdminAuth(), handlers.EditProduct(db))
 	r.DELETE("/products/:productId", middlewares.AdminAuth(), handlers.DeleteProduct(db))
 
+	r.POST("/transactions", handlers.CreateTransaction(db))
+	r.GET("/transactions/my-transactions", handlers.GetMyTransactions(db))
+	r.GET("/transactions/user-transactions", middlewares.AdminAuth(), handlers.GetUserTransactions(db))
+
 	if err := r.Run(":8080"); err != nil {
 		log.Fatal("Server failed!")
 	}
